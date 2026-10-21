@@ -11,18 +11,13 @@ public class FileTransferRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        // Ruta Principal
+        // Única Ruta: Lee de input, filtra solo CSV, transforma a mayúsculas y guarda en output.
+        // Si entra un archivo .txt, el filtro lo ignorará y no pasará de este punto.
         from("file:input?noop=true")
             .filter(header("CamelFileName").endsWith(".csv"))
-            .log("Procesando archivo: ${file:name} a las ${date:now:yyyy-MM-dd HH:mm:ss}")
-            // CORRECCIÓN: Convertir el contenido del archivo a texto antes de usar toUpperCase()
+            .log("Procesando archivo válido CSV: ${file:name} a las ${date:now:yyyy-MM-dd HH:mm:ss}")
             .convertBodyTo(String.class)
             .transform().simple("${body.toUpperCase()}")
             .to("file:output");
-
-        // Ruta Extra
-        from("file:output?delete=true")
-            .log("Archivando archivo procesado: ${file:name}")
-            .to("file:archived");
     }
 }
