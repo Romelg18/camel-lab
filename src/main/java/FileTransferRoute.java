@@ -11,8 +11,8 @@ public class FileTransferRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        // Única Ruta: Lee de input, filtra solo CSV, transforma a mayúsculas y guarda en output.
-        // Si entra un archivo .txt, el filtro lo ignorará y no pasará de este punto.
+        // unica Ruta: Lee de input, filtra solo CSV, transforma a mayusculas y guarda en output.
+        // Si entra un archivo .txt, el filtro lo ignorara y no pasara de este punto.
         from("file:input?noop=true")
             .filter(header("CamelFileName").endsWith(".csv"))
             .log("Procesando archivo válido CSV: ${file:name} a las ${date:now:yyyy-MM-dd HH:mm:ss}")
